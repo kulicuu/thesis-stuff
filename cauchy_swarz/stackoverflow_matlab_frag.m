@@ -93,6 +93,11 @@ function [NCC]  = naive_normxcorr2(temp,img)
     NCC = NCC_naive ./ (M .* temp_std .* wins_std);
 end
 
+
+
+
+
+
 n = 170;
 
 particle_1=rand(54,54,n);

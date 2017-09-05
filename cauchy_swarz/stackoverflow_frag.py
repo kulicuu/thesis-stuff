@@ -4,6 +4,9 @@
 # https://stackoverflow.com/questions/44591037/speed-up-calculation-of-maximum-of-normxcorr2
 # it is to be translated into python
 
+# NOTE: this page is particularly helpful:
+# https://docs.scipy.org/doc/numpy-dev/user/numpy-for-matlab-users.html
+
 from PIL import Image
 import numpy as npy
 
@@ -17,6 +20,9 @@ print(img_1)
 img_2 = npy.asmatrix(Image.open('image_1.jpg').convert('L'))
 print(img_2, 'img_2')
 
+
+
+# some test stuff:
 
 [x, y] = img_1.shape
 print(x, 'x')
@@ -34,9 +40,7 @@ M = npy.array([[1,2,3], [4,5,6], [7,8,9]])
 
 print(M[0:2:1, 0:2:1])
 
-
-
-
+# test stuff ^^^
 
 
 
@@ -54,14 +58,11 @@ def naive_corr(pat, img):
 
 
 
+
 def box_corr2(img, box_arr, w_arr, n_p, m_p):
-
-
     I = (img.cumsum(axis = 0)).cumsum(axis = 1)
     I = npy.array([zeros(1, I.shape[1] + 1)], [zeros()])
-
     C = npy.zeros(n - n_p, m - m_p)
-
     jump_x = 1
     jump_y = 1
 
@@ -81,5 +82,23 @@ def box_corr2(img, box_arr, w_arr, n_p, m_p):
 
 
 
+
 def naive_normxcorr2(temp, img):
-    return 0
+    [n_p, m_p] = temp.shape
+
+    M = n_p * m_p
+
+    temp_mean = npy.mean(temp.flatten())
+    temp = temp - tem_mean
+
+    temp_std = npy.sqrt(sum(npy.power(temp.flatten(), 2)) / M)
+
+
+    wins_mean = box_corr2( img, [0, n_p, 0, m_p], 1/M, n_p, m_p )
+    wins_mean2 = box_corr2( npy.power(img, 2), [0, n_p, 0, m_p], 1/M, n_p, m_p )
+
+    wins_std = npy.sqrt(wins_mean2 - npy.power(wins_mean, 2)).real
+
+    NCC_naive = naive_corr(temp, img)
+
+    NCC = NCC_naive / M
