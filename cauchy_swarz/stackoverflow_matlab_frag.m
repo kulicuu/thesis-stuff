@@ -1,3 +1,11 @@
+
+
+% this is pulled from Dafna's stackoverflow reply at
+% https://stackoverflow.com/questions/44591037/speed-up-calculation-of-maximum-of-normxcorr2
+% it is to be translated into python
+
+
+
 pkg load image
 
 function [N] = naive_corr(pat,img)

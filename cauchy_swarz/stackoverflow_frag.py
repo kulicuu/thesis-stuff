@@ -1,6 +1,8 @@
 
 
-
+# this is the translation of the matlab fragment pulled from Dafna's stackoverflow reply at
+# https://stackoverflow.com/questions/44591037/speed-up-calculation-of-maximum-of-normxcorr2
+# it is to be translated into python
 
 from PIL import Image
 import numpy as npy
