@@ -14,14 +14,12 @@ import numpy as npy
 def naive_corr(pat, img):
     [n, m] = img.shape
     [np, mp] = pat.shape
-    N = npy.zeros(shape=(n - np + 1, m - mp + 1))
+    N = npy.zeros((n - np + 1, m - mp + 1))
     for i in range(0, n - np + 1):
         for j in range(0, m - mp + 1):
             img_sub = img[i : i + np : 1, j : j + mp : 1 ]
             N[i][j] = npy.sum(npy.dot(pat, img_sub))
     return N
-
-
 
 
 
@@ -32,11 +30,12 @@ def box_corr2(img, box_arr, w_arr, n_p, m_p):
     # >>> np.cumsum(a,axis=0)      # sum over rows for each of the 3 columns
     # >>> np.cumsum(a,axis=1)      # sum over columns for each of the 2 rows
     I = (img.cumsum(axis = 1)).cumsum(axis = 0)
-    I = npy.array([ zeros(1, I.shape[1] + 1) ], [ zeros(I.shape[0],1), I, zeros(I.shape[0], 1)], [zeros(1, I.shape[1] + 1) ])
+    I = npy.array([ zeros(1, I.shape[1] + 1) ], [ npy.zeros((I.shape[0]),1),
+        I, npy.zeros((I.shape[0]), 1)],
+        [npy.zeros((1, I.shape[1] + 1) )])
 
     [n, m] = img.shape
-    C = npy.zeros(n - n_p, m - m_p)
-
+    C = npy.zeros((n - n_p, m - m_p))
 
     jump_x = 1
     jump_y = 1
@@ -134,3 +133,15 @@ print(M[0:2:1, 0:2:1])
 
 
 # test 2 regime
+
+print('\n \n')
+
+n = 170
+particle_1 = npy.random.rand(54, 54, n)
+particle_2 = npy.random.rand(56, 56, n)
+
+[n_p1, m_p1, c_p1] = particle_1.shape
+print(n_p1, 'n_p1')
+[n_p2, m_p2, c_p2] = particle_2.shape
+
+L1 = npy.zeros((n, 1))
