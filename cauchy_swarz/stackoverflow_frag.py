@@ -27,9 +27,17 @@ def naive_corr(pat, img):
 
 
 def box_corr2(img, box_arr, w_arr, n_p, m_p):
-    I = (img.cumsum(axis = 0)).cumsum(axis = 1)
-    I = npy.array([zeros(1, I.shape[1] + 1)], [zeros()])
+
+    # axis=0 sum over rows for each of the 3 columns
+    # >>> np.cumsum(a,axis=0)      # sum over rows for each of the 3 columns
+    # >>> np.cumsum(a,axis=1)      # sum over columns for each of the 2 rows
+    I = (img.cumsum(axis = 1)).cumsum(axis = 0)
+    I = npy.array([ zeros(1, I.shape[1] + 1) ], [ zeros(I.shape[0],1), I, zeros(I.shape[0], 1)], [zeros(1, I.shape[1] + 1) ])
+
+    [n, m] = img.shape
     C = npy.zeros(n - n_p, m - m_p)
+
+
     jump_x = 1
     jump_y = 1
 
@@ -41,10 +49,28 @@ def box_corr2(img, box_arr, w_arr, n_p, m_p):
     y_end = m - y_start + npy.mod(m_p, 2)
     y_span = npy.arrange(y_start, y_end, 1)
 
-    arr_a = box_arr
+    arr_a = box_arr[:][0] - x_start
+    arr_b = box_arr[:][1] - x_start + 1
+    arr_c = box_arr[:][2] - y_start
+    arr_d = box_arr[:][3] - y_start + 1
 
+    # cumulate box responses
+    k = npy.shape(box_arr)[0]
 
+    for i in range(0, k - 1)
+        a = arr_a[i]
+        b = arr_b[i]
+        c = arr_c[i]
+        d = arr_d[i]
 
+        C = C +
+            w_arr[i] * (
+            I[x_span + b][y_span + d] -
+            I[x_span + b][y_span + c] -
+            I[x_span + a][y_span + d] +
+            I[x_span + a][y_span + c]
+            )
+    return C
 
 
 def naive_normxcorr2(temp, img):

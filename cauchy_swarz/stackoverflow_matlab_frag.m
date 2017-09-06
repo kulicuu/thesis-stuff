@@ -26,6 +26,7 @@ end
 function [C] = box_corr2(img,box_arr,w_arr,n_p,m_p)
 
     % construct integral image + zeros pad (for boundary problems)
+    % B = cumsum(A,dim) returns the cumulative sum of the elements along dimension dim. For example, if A is a matrix, then cumsum(A,2) returns the cumulative sum of each row.
     I = cumsum(cumsum(img,2),1);
     I = [zeros(1,size(I,2)+2); [zeros(size(I,1),1) I zeros(size(I,1),1)]; zeros(1,size(I,2)+2)];
 
