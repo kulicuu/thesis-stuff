@@ -16,9 +16,10 @@ def naive_corr(pat, img):
     [n, m] = img.shape
     [np, mp] = pat.shape
     N = npy.zeros((n - np + 1, m - mp + 1))
-    for i in range(0, n - np + 1):
-        for j in range(0, m - mp + 1):
-            img_sub = img[i : i + np : 1, j : j + mp : 1 ]
+    for i in range(0, n - np):
+        for j in range(0, m - mp):
+            img_sub = img[i : i + np][j : j + mp]
+            # print(img_sub, 'img_sub')
             N[i][j] = npy.sum(npy.dot(pat, img_sub))
     return N
 
@@ -27,20 +28,15 @@ def naive_corr(pat, img):
 
 def box_corr2(img, box_arr, w_arr, n_p, m_p):
 
+
+
+
     # axis=0 sum over rows for each of the 3 columns
     # >>> np.cumsum(a,axis=0)      # sum over rows for each of the 3 columns
     # >>> np.cumsum(a,axis=1)      # sum over columns for each of the 2 rows
     I = npy.cumsum(npy.cumsum(img, axis = 1), axis = 0)
     print(I, 'I')
 
-    # j1 = [ npy.zeros((1, I.shape[1] + 1)) ]
-    # print(j1, 'j1')
-    #
-    # j2 = [ npy.zeros((I.shape[0], 1)), I, npy.zeros((I.shape[0], 1)) ]
-    # print(j2, 'j2')
-    #
-    # j3 = [ npy.zeros((1, I.shape[1] + 1)) ]
-    # print(j3, 'j3')
 
     I = npy.array([[ npy.zeros((1, I.shape[1] + 1)) ], [ npy.zeros((I.shape[0], 1)),
         I, npy.zeros((I.shape[0], 1)) ],
@@ -67,7 +63,12 @@ def box_corr2(img, box_arr, w_arr, n_p, m_p):
     arr_d = box_arr[:][3] - y_start + 1
 
     # cumulate box responses
-    k = box_arr.shape[0]
+    # k = box_arr.shape[0]
+    k = 1
+
+    print(box_arr, 'box_arr')
+    # k = box_arr.length
+
 
     for i in range(0, k - 1):
         a = arr_a[i]
@@ -97,7 +98,9 @@ def naive_normxcorr2(temp, img):
 
     temp_std = npy.sqrt(sum(npy.power(temp.flatten(), 2)) / M)
 
-    wins_mean = box_corr2( img, [0, n_p, 0, m_p], 1/M, n_p, m_p )
+    print(img, '3883838383838')
+    wins_mean = box_corr2(img, [0, n_p, 0, m_p], 1/M, n_p, m_p )
+    print('939393939393')
     wins_mean2 = box_corr2( npy.power(img, 2), [0, n_p, 0, m_p], 1/M, n_p, m_p )
 
     wins_std = npy.sqrt(wins_mean2 - npy.power(wins_mean, 2)).real
@@ -167,6 +170,9 @@ L2 = npy.zeros((n, 1))
 #     L1[i] = C1_unpadded.flatten().max
 
 
-for i in range(0, n):
+print(particle_2[:][:][3], 'that thing')
+
+
+for i in range(0, n - 1):
     C2 = naive_normxcorr2(particle_1[:][:][i], particle_2[:][:][i])
     L2[i] = C2.flatten().max

@@ -108,7 +108,7 @@ particle_2=rand(56,56,n);
 [n_p2,m_p2,c_p2]=size(particle_2);
 
 L1 = zeros(n,1);
-L2 = zeros (n,1);
+L2 = zeros(n,1);
 
 
 tic
