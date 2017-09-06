@@ -29,9 +29,10 @@ def box_corr2(img, box_arr, w_arr, n_p, m_p):
     # axis=0 sum over rows for each of the 3 columns
     # >>> np.cumsum(a,axis=0)      # sum over rows for each of the 3 columns
     # >>> np.cumsum(a,axis=1)      # sum over columns for each of the 2 rows
-    I = (img.cumsum(axis = 1)).cumsum(axis = 0)
+    I = npy.cumsum(npy.cumsum(img, axis = 1), axis = 0)
+    print(I, 'I')
     I = npy.array([ npy.zeros((1, I.shape[1] + 1)) ], [ npy.zeros((I.shape[0], 1)),
-        I, npy.zeros((I.shape[0], 1))],
+        I, npy.zeros((I.shape[0], 1)) ],
         [ npy.zeros((1, I.shape[1] + 1)) ]
     )
 
