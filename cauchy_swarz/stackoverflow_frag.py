@@ -30,9 +30,10 @@ def box_corr2(img, box_arr, w_arr, n_p, m_p):
     # >>> np.cumsum(a,axis=0)      # sum over rows for each of the 3 columns
     # >>> np.cumsum(a,axis=1)      # sum over columns for each of the 2 rows
     I = (img.cumsum(axis = 1)).cumsum(axis = 0)
-    I = npy.array([ zeros(1, I.shape[1] + 1) ], [ npy.zeros((I.shape[0]),1),
-        I, npy.zeros((I.shape[0]), 1)],
-        [npy.zeros((1, I.shape[1] + 1) )])
+    I = npy.array([ npy.zeros((1, I.shape[1] + 1)) ], [ npy.zeros((I.shape[0], 1)),
+        I, npy.zeros((I.shape[0], 1))],
+        [ npy.zeros((1, I.shape[1] + 1)) ]
+    )
 
     [n, m] = img.shape
     C = npy.zeros((n - n_p, m - m_p))
@@ -80,7 +81,7 @@ def naive_normxcorr2(temp, img):
     M = n_p * m_p
 
     temp_mean = npy.mean(temp.flatten())
-    temp = temp - tem_mean
+    temp = temp - temp_mean
 
     temp_std = npy.sqrt(sum(npy.power(temp.flatten(), 2)) / M)
 
@@ -145,3 +146,15 @@ print(n_p1, 'n_p1')
 [n_p2, m_p2, c_p2] = particle_2.shape
 
 L1 = npy.zeros((n, 1))
+L2 = npy.zeros((n, 1))
+
+# for i in range(0, n):
+#     C1 = normxcorr2(particle1[n_p1:n_p2][m_p1:m_p2])
+#
+#     C1_unpadded = C1[n_p1:n_p2][m_p1:m_p2]
+#     L1[i] = C1_unpadded.flatten().max
+
+
+for i in range(0, n):
+    C2 = naive_normxcorr2(particle_1[:][:][i], particle_2[:][:][i])
+    L2[i] = C2.flatten().max
