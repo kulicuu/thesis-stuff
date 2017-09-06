@@ -55,22 +55,24 @@ def box_corr2(img, box_arr, w_arr, n_p, m_p):
     arr_d = box_arr[:][3] - y_start + 1
 
     # cumulate box responses
-    k = npy.shape(box_arr)[0]
+    k = box_arr.shape[0]
 
-    for i in range(0, k - 1)
+    for i in range(0, k - 1):
         a = arr_a[i]
         b = arr_b[i]
         c = arr_c[i]
         d = arr_d[i]
 
-        C = C +
-            w_arr[i] * (
+        C = C + w_arr[i] * (
             I[x_span + b][y_span + d] -
             I[x_span + b][y_span + c] -
             I[x_span + a][y_span + d] +
             I[x_span + a][y_span + c]
             )
     return C
+
+
+
 
 
 def naive_normxcorr2(temp, img):
@@ -91,6 +93,11 @@ def naive_normxcorr2(temp, img):
 
     NCC = NCC_naive / (M * temp_std * wins_std)
     return NCC
+
+
+
+
+
 
 
 
@@ -122,3 +129,8 @@ M = npy.array([[1,2,3], [4,5,6], [7,8,9]])
 print(M[0:2:1, 0:2:1])
 
 # test stuff ^^^
+
+
+
+
+# test 2 regime
