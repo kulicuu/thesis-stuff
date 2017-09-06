@@ -9,6 +9,7 @@
 
 from PIL import Image
 import numpy as npy
+import cv2
 
 
 def naive_corr(pat, img):
@@ -31,9 +32,19 @@ def box_corr2(img, box_arr, w_arr, n_p, m_p):
     # >>> np.cumsum(a,axis=1)      # sum over columns for each of the 2 rows
     I = npy.cumsum(npy.cumsum(img, axis = 1), axis = 0)
     print(I, 'I')
-    I = npy.array([ npy.zeros((1, I.shape[1] + 1)) ], [ npy.zeros((I.shape[0], 1)),
+
+    # j1 = [ npy.zeros((1, I.shape[1] + 1)) ]
+    # print(j1, 'j1')
+    #
+    # j2 = [ npy.zeros((I.shape[0], 1)), I, npy.zeros((I.shape[0], 1)) ]
+    # print(j2, 'j2')
+    #
+    # j3 = [ npy.zeros((1, I.shape[1] + 1)) ]
+    # print(j3, 'j3')
+
+    I = npy.array([[ npy.zeros((1, I.shape[1] + 1)) ], [ npy.zeros((I.shape[0], 1)),
         I, npy.zeros((I.shape[0], 1)) ],
-        [ npy.zeros((1, I.shape[1] + 1)) ]
+        [ npy.zeros((1, I.shape[1] + 1)) ]]
     )
 
     [n, m] = img.shape
@@ -42,13 +53,13 @@ def box_corr2(img, box_arr, w_arr, n_p, m_p):
     jump_x = 1
     jump_y = 1
 
-    x_start = ceil(n_p / 2)
+    x_start = npy.ceil(n_p / 2)
     x_end = n - x_start + npy.mod(n_p, 2)
-    x_span = npy.arrange(x_start, x_end, 1)
+    x_span = npy.arange(x_start, x_end, 1)
 
     y_start = npy.ceil(m_p / 2)
     y_end = m - y_start + npy.mod(m_p, 2)
-    y_span = npy.arrange(y_start, y_end, 1)
+    y_span = npy.arange(y_start, y_end, 1)
 
     arr_a = box_arr[:][0] - x_start
     arr_b = box_arr[:][1] - x_start + 1
