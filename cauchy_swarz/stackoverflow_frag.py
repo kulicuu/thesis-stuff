@@ -9,7 +9,14 @@
 
 from PIL import Image
 import numpy as npy
-import cv2
+import cv2 as open_c_vis
+import spectral as spy
+import scipy
+import pysptools
+
+
+
+
 
 
 def naive_corr(pat, img):
@@ -103,8 +110,20 @@ def naive_normxcorr2(temp, img):
     print('939393939393')
     wins_mean2 = box_corr2( npy.power(img, 2), [0, n_p, 0, m_p], 1/M, n_p, m_p )
 
+
+
+
     wins_std = npy.sqrt(wins_mean2 - npy.power(wins_mean, 2)).real
+    int_1 = wins_mean2 - npy.power(wins_mean, 2)
+    print(int_1, 'int_1')
+
     NCC_naive = naive_corr(temp, img)
+
+    print(M, 'M')
+    print(temp_std, 'temp_std')
+    intermed = M * temp_std * wins_std
+    print(intermed, 'intermed')
+    print(wins_std, 'wins_std')
 
     NCC = NCC_naive / (M * temp_std * wins_std)
     return NCC
@@ -117,31 +136,31 @@ def naive_normxcorr2(temp, img):
 
 
 
-img_1 = npy.asarray(Image.open('image_1.jpg').convert('L'))
-print(img_1)
-
-img_2 = npy.asmatrix(Image.open('image_1.jpg').convert('L'))
-print(img_2, 'img_2')
+# img_1 = npy.asarray(Image.open('image_1.jpg').convert('L'))
+# print(img_1)
+#
+# img_2 = npy.asmatrix(Image.open('image_1.jpg').convert('L'))
+# print(img_2, 'img_2')
 
 
 
 # some test stuff:
 
-[x, y] = img_1.shape
-print(x, 'x')
-
-N = npy.zeros(shape=(5,5))
-print(N, 'N')
-
-# N(3, 3) = 40
-N[3][3] = 40
-print(N[3][3], 'the entry 3,3')
-
-print(img_2[0:2][0:2], 'img_2 sub')
-
-M = npy.array([[1,2,3], [4,5,6], [7,8,9]])
-
-print(M[0:2:1, 0:2:1])
+# [x, y] = img_1.shape
+# print(x, 'x')
+#
+# N = npy.zeros(shape=(5,5))
+# print(N, 'N')
+#
+# # N(3, 3) = 40
+# N[3][3] = 40
+# print(N[3][3], 'the entry 3,3')
+#
+# print(img_2[0:2][0:2], 'img_2 sub')
+#
+# M = npy.array([[1,2,3], [4,5,6], [7,8,9]])
+#
+# print(M[0:2:1, 0:2:1])
 
 # test stuff ^^^
 
@@ -150,18 +169,23 @@ print(M[0:2:1, 0:2:1])
 
 # test 2 regime
 
-print('\n \n')
+# print('\n \n')
 
 n = 170
 particle_1 = npy.random.rand(54, 54, n)
 particle_2 = npy.random.rand(56, 56, n)
 
-[n_p1, m_p1, c_p1] = particle_1.shape
-print(n_p1, 'n_p1')
-[n_p2, m_p2, c_p2] = particle_2.shape
+print(particle_1, 'particle_1')
+print(particle_1.shape)
+
+# [n_p1, m_p1, c_p1] = particle_1.shape
+# print(n_p1, 'n_p1')
+# [n_p2, m_p2, c_p2] = particle_2.shape
 
 L1 = npy.zeros((n, 1))
 L2 = npy.zeros((n, 1))
+
+# print(L1, 'L1')
 
 # for i in range(0, n):
 #     C1 = normxcorr2(particle1[n_p1:n_p2][m_p1:m_p2])
@@ -170,9 +194,9 @@ L2 = npy.zeros((n, 1))
 #     L1[i] = C1_unpadded.flatten().max
 
 
-print(particle_2[:][:][3], 'that thing')
+# print(particle_2[:][:][3], 'that thing')
 
-
-for i in range(0, n - 1):
-    C2 = naive_normxcorr2(particle_1[:][:][i], particle_2[:][:][i])
-    L2[i] = C2.flatten().max
+#
+# for i in range(0, n - 1):
+#     C2 = naive_normxcorr2(particle_1[:][:][i], particle_2[:][:][i])
+#     L2[i] = C2.flatten().max

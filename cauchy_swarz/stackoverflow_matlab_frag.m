@@ -23,7 +23,7 @@ end
 %w_arr the array of coefficients for the boxes
 %box_arr of size [k,4] where k is the number boxes, each box represented by
 %4 something ...
-function [C] = box_corr2(img,box_arr,w_arr,n_p,m_p)
+function [C] = box_corr2(img, box_arr, w_arr, n_p, m_p)
 
     % construct integral image + zeros pad (for boundary problems)
     % B = cumsum(A,dim) returns the cumulative sum of the elements along dimension dim. For example, if A is a matrix, then cumsum(A,2) returns the cumulative sum of each row.
@@ -34,7 +34,7 @@ function [C] = box_corr2(img,box_arr,w_arr,n_p,m_p)
     [n,m] = size(img);
     C = zeros(n-n_p+1,m-m_p+1);
     %C = zeros(n,m);
-
+    % C
     jump_x = 1;
     jump_y = 1;
 
@@ -96,13 +96,13 @@ end
 
 
 
-
-
-
 n = 170;
 
 particle_1=rand(54,54,n);
 particle_2=rand(56,56,n);
+
+particle_1
+"particle_1"
 
 [n_p1,m_p1,c_p1]=size(particle_1);
 [n_p2,m_p2,c_p2]=size(particle_2);
@@ -111,15 +111,15 @@ L1 = zeros(n,1);
 L2 = zeros(n,1);
 
 
-tic
-for i=1:n
-    C1=normxcorr2(particle_1(:,:,i),particle_2(:,:,i));
-
-    C1_unpadded = C1(n_p1:n_p2 , m_p1:m_p2);
-    L1(i)=max(C1_unpadded(:));
-
-end
-toc
+% tic
+% for i=1:n
+%     C1=normxcorr2(particle_1(:,:,i),particle_2(:,:,i));
+%
+%     C1_unpadded = C1(n_p1:n_p2 , m_p1:m_p2);
+%     L1(i)=max(C1_unpadded(:));
+%
+% end
+% toc
 
 
 tic
